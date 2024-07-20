@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTF</title>
+    <style>
+        :root {
+            --direction: -45deg;
+            --gold: #b9f2ff;
+            --light-shadow: #b9f2ff;
+            --dark-shadow: silver; /* Change the dark-shadow variable to silver */
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 50%, rgba(192,192,192,0.02) 50%, rgba(192,192,192,0.02) 100%);
+        }
+        main {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-attachment: fixed;
+        }
+        .background, .foreground {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+        .background {
+            background-image: url('https://hdqwalls.com/wallpapers/fsociety-mr-robot-4n.jpg');
+        }
+        .foreground {
+            background-image: url('https://wallpapercave.com/wp/wp4005924.jpg');
+            mask-image: linear-gradient(var(--direction), rgba(0,0,0,1) 40%, rgba(0,0,0,0) 60%);
+            mask-position: 50% 50%;
+        }
+        @media (max-width: 1024px) {
+            .background, .foreground {
+                background-size: cover; /* Ensures the background covers the entire area */
+                background-position: center; /* Centers the background */
+            }
+        }
+        @media (max-width: 768px) {
+            .background, .foreground {
+                background-size: cover; /* Ensures the background covers the entire area */
+                background-position: center; /* Centers the background */
+            }
+        }
+        header .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Optional overlay */
+        }
+        .wrapper {
+            display: grid;
+            grid-template-areas: 'overlap';
+            place-content: center;
+            text-transform: uppercase;
+            height: 50vh;
+        }
+        .wrapper > div {
+            background-clip: text;  
+            -webkit-background-clip: text;
+            color: #363833;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 1000;
+            font-size: clamp(2em, 10vw, 10rem);
+            grid-area: overlap;    
+            letter-spacing: 1px;
+            -webkit-text-stroke: 4px transparent;
+        }
+        div.bg {
+            background-image: repeating-linear-gradient(105deg, var(--gold) 0%, var(--dark-shadow) 5%, var(--gold) 12%);
+            color: transparent;
+            filter: drop-shadow(5px 15px 15px black);
+            transform: scaleY(1.05);
+            transform-origin: top;
+        }
+        div.fg {
+            background-image: repeating-linear-gradient(5deg, var(--gold) 0%, var(--light-shadow) 23%, var(--gold) 31%);
+            color: #1e2127;
+            transform: scale(1);
+        }
+        h4{
+            font-family: 'Open Sans', sans-serif;
+            margin-bottom: 2px;
+            color: #ffffff;
+            padding: 4px;
+            text-align: center;
+        }
+        p {
+            font-family: 'Open Sans', sans-serif;
+            margin-bottom: 2px;
+            color: #ffffff; /* Dark blue text color */
+            padding: 2px;
+            text-align: center;
+            font-weight: bold; /* Making the text bold */
+            text-shadow: 2px 2px 4px #C0C0C0; /* Adding a silver shadow */
+        }
+        .container {
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            background-color: rgba(17, 25, 40, 0.25);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.125);  
+            padding: 10px;  
+            filter: drop-shadow(0 30px 10px rgba(0,0,0,0.125));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .container .wrapper {
+            width: 60%;
+            height: 60%;
+        }
+        .banner-image1 {
+            background-image: url('');
+            background-position: center center;
+            background-size: cover;
+            height: 400px;
+            width: 100%;
+            max-width: 30%;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.255);
+        }
+        @media (max-width: 1024px) { /* Tablet and smaller laptop screens */
+            .banner-image1 {
+                height: 300px;
+                max-width: 50%;
+            }
+        }
+        @media (max-width: 768px) { /* Smartphones */
+            .banner-image1 {
+                height: 200px;
+                max-width: 80%;
+            }
+        }
+        .banner-image2 {
+            background-image: url('');
+            background-position: center center;
+            background-size: cover;
+            height: 400px;
+            width: 100%;
+            max-width: 30%;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.255);
+        }
+        @media (max-width: 1024px) { /* Tablet and smaller laptop screens */
+            .banner-image2 {
+                height: 300px;
+                max-width: 50%;
+            }
+        }
+        @media (max-width: 768px) { /* Smartphones */
+            .banner-image2 {
+                height: 200px;
+                max-width: 80%;
+            }
+        }
+        .banner-image3 {
+            background-image: url('');
+            background-position: center center;
+            background-size: cover;
+            height: 400px;
+            width: 100%;
+            max-width: 30%;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.255);
+        }
+        @media (max-width: 1024px) { /* Tablet and smaller laptop screens */
+            .banner-image3 {
+                height: 300px;
+                max-width: 50%;
+            }
+        }
+        @media (max-width: 768px) { /* Smartphones */
+            .banner-image3 {
+                height: 200px;
+                max-width: 80%;
+            }
+        }
+        h1 {
+            font-family: 'Righteous', sans-serif;
+            color: rgba(255,255,255,0.98);
+            text-transform: uppercase;
+            font-size: 2.4rem;
+        }
+        .button {
+            position: relative;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: var(--color);
+            border: 2px solid rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            text-shadow: 0 0 15px var(--color);
+            text-decoration-color: #;
+            text-transform: uppercase;
+            letter-spacing: 0.1rem;
+            transition: 0.5s;
+            z-index: 1;
+            margin: 0 10px;
+        }
+        .button:hover {
+            color: #fff;
+            border: 2px solid rgba(0, 0, 0, 0);
+            box-shadow: 0 0 0px var(--color);
+        }
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color);
+            z-index: -1;
+            transform: scale(0);
+            transition: 1s;
+        }
+        .button:hover::before {
+            transform: scale(1);
+            transition-delay: 0.5s;
+            box-shadow: 0 0 10px var(--color),
+            0 0 20px var(--color),
+            0 0 40px var(--color),
+            0 0 60px var(--color);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="overlay"></div>
+        <div class="wrapper">
+            <div class="bg">H4CK T0</div>
+            <div class="fg">H4CK T0</div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <h1>CTF H4CK T0</h1>
+            <select id="sectionSelect" class="button">
+                <option value="categories">Categories</option>
+                <option value="channels">Channels</option>
+                <option value="websites">Websites</option>
+            </select>
+            <section id="categories">
+                <h4>Categories</h4>
+                <div class="banner-image1"></div>
+                <p>Information on Categories</p>
+            </section>
+            <section id="channels">
+                <h4>Channels</h4>
+                <div class="banner-image2"></div>
+                <p>Information on Channels</p>
+            </section>
+            <section id="websites">
+                <h4>Websites</h4>
+                <div class="banner-image3"></div>
+                <p>Information on Websites</p>
+            </section>
+        </div>
+    </main>
+    <script>
+        document.getElementById('sectionSelect').addEventListener('change', function() {
+            var selectedSection = this.value;
+            document.getElementById(selectedSection).scrollIntoView({behavior: 'smooth'});
+        });
+    </script>
+</body>
+</html>
