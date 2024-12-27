@@ -474,6 +474,7 @@ div.fg{
         -webkit-text-stroke: 1px transparent;
     }
 }
+/* Card styles */
 .cardee {
   width: 190px;
   height: 254px;
@@ -486,7 +487,7 @@ div.fg{
   overflow: hidden;
   border-radius: 20px;
   padding: 10px;
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth animation */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
   margin: 10px;
 }
 
@@ -501,22 +502,41 @@ div.fg{
   margin-bottom: 10px;
 }
 
-.cardee:hover {
-  box-shadow: 
-    0 0 20px rgba(255, 223, 0, 0.7), /* Gold glow */
-    0 0 40px rgba(255, 223, 0, 0.5), /* Outer gold halo */
-    0 0 15px rgba(255, 255, 255, 0.8), /* Diamond-like bright white */
-    0 0 50px rgba(255, 223, 0, 0.4); /* Subtle long gold shine */
-  transform: scale(1.05); /* Slightly enlarge the card */
-  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+/* Arrow styling */
+.down-arrow {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 12px solid white; /* Arrow color */
+  transition: transform 0.3s ease-in-out, border-width 0.3s ease-in-out;
 }
 
+/* Hover effect for the card */
+.cardee:hover {
+  box-shadow: 
+    0 0 20px rgba(255, 223, 0, 0.7),
+    0 0 40px rgba(255, 223, 0, 0.5),
+    0 0 15px rgba(255, 255, 255, 0.8),
+    0 0 50px rgba(255, 223, 0, 0.4);
+  transform: scale(1.05);
+}
+
+/* Active state for the arrow */
+.cardee.active .down-arrow {
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 30px solid white; /* Larger arrow */
+  transform: scale(1.2); /* Slightly enlarge the arrow */
+}
+
+/* Click effect for the card */
 .cardee:active {
   box-shadow: 
-    0 0 30px rgba(255, 255, 255, 0.9), /* Intense diamond shine */
-    0 0 50px rgba(255, 215, 0, 0.7); /* Bright gold shine */
-  transform: scale(0.98); /* Slight shrink on click */
-  transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+    0 0 30px rgba(255, 255, 255, 0.9),
+    0 0 50px rgba(255, 215, 0, 0.7);
+  transform: scale(0.98);
 }
 
 /* Rotating gradient background */
@@ -547,21 +567,6 @@ div.fg{
   inset: 5px;
   border-radius: 15px;
   z-index: 1;
-}
-
-/* Down arrow */
-.down-arrow {
-  width: 0;
-  height: 0;
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-top: 12px solid white;
-  transition: transform 0.3s ease-in-out;
-}
-
-/* Arrow movement on hover */
-.cardee:hover .down-arrow {
-  transform: translateY(5px);
 }
 
 /* Container for cards */
@@ -625,7 +630,7 @@ div.fg{
     <span>Explore Courses</span>
     <div class="down-arrow"></div>
   </div>
-  <div class="cardee" onclick="window.location.href='programming.html'">
+  <div class="cardee" onclick="window.location.href='progaming.html'">
     <span>Programming</span>
   </div>
   <div class="cardee" onclick="window.location.href='ccna.html'">
@@ -634,14 +639,14 @@ div.fg{
   <div class="cardee" onclick="window.location.href='ctf.html'">
     <span>CTF Related</span>
   </div>
-  <div class="cardee" onclick="window.location.href='https://www.just.edu.jo/ar/FacultiesandDepartments/it/Pages/viewplan.aspx?planno=565'">
-    <span>Study Plan 2021</span>
-  </div>
   <div class="cardee" onclick="window.location.href='train.html'">
     <span>About Training</span>
   </div>
   <div class="cardee" onclick="window.location.href='https://drive.google.com/file/d/1OFL0xZu9XLqow9gAVup8E5_DXhd5r5Qq/view'">
     <span>Tree Plan 2021</span>
+  </div>
+  <div class="cardee" onclick="window.location.href='https://www.just.edu.jo/aboutjust/map/Pages/default.aspx'">
+    <span>JUST Map</span>
   </div>
 </div>
 
@@ -690,6 +695,8 @@ div.fg{
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
+  
+  
   
     function showSection(sectionId) {
       // Hide all sections
@@ -978,6 +985,7 @@ div.fg{
     // Event listener for search input
     document.getElementById('courseSearch').addEventListener('input', filterCourses);
     
+  
   </script>
 </body>
 </html>
