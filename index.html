@@ -140,38 +140,56 @@
       color: black;
     }
 
-  .logo {
-     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-weight: normal;
-    width: 100%;
-    font-size: 10vw;
-    background: linear-gradient(
-        -60deg,
-        #FFD700 20%,    /* Gold */
-        #87CEEB 20%,    /* Sky Blue */
-        #87CEEB 40%,   
-        #FFD700 40%,   
-        #FFD700 60%,   
-        #87CEEB 60%,   
-        #87CEEB 80%,   
-        #FFD700 80%
-    );
-     color: transparent;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-size: 20px 20px;
-      background-position: 0 0;
-      animation: stripes 1s linear infinite; /* Adjusted animation timing */
-      }
+  /* Container styling */
+.logo-container {
+    display: flex; /* Align images horizontally */
+    justify-content: center; /* Center logos */
+    align-items: center; /* Center logos vertically */
+    gap: 40px; /* Increased space between logos */
+    margin: 20px 0; /* Add spacing above and below the container */
+    flex-wrap: wrap; /* Allow wrapping for small screens */
+}
 
-    @keyframes stripes {
-      100% { 
-        background-position: 20px 0, 20px 0, 20px 0;
-      }
+/* Logo styling */
+.logo {
+    max-width: 400px; /* Increased maximum width for larger screens */
+    max-height: 220px; /* Increased maximum height for larger screens */
+    width: auto; /* Maintain aspect ratio */
+    height: auto; /* Maintain aspect ratio */
+    transition: transform 0.3s ease-in-out; /* Smooth hover effect */
+}
+
+/* Hover effect for logos */
+.logo:hover {
+    transform: scale(1.1); /* Slightly enlarge the logo on hover */
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1200px) {
+    .logo {
+        max-width: 350px; /* Size logos for laptops */
+        max-height: 200px;
     }
+}
+
+@media (max-width: 768px) {
+    .logo-container {
+        flex-direction: column; /* Stack logos vertically on smaller screens */
+        gap: 20px; /* Adjust space between logos */
+    }
+
+    .logo {
+        max-width: 250px; /* Adjust size for tablets */
+        max-height: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        max-width: 180px; /* Adjust size for smaller screens */
+        max-height: 120px;
+    }
+}
 
     /* Styles for the header section */
     header {
@@ -663,10 +681,11 @@ div.fg{
 
       </div>
     </div>
-    <div class="text-center">
-        <img src="logo.png" alt="logo">
-        <img src="logo2.png" alt="logo2">
-    </div>
+    <div class="logo-container text-center">
+    <img src="logo.png" alt="Logo" class="logo">
+    <img src="logo2.png" alt="Logo 2" class="logo">
+</div>
+
   </div>
 
   <!-- Courses Section -->
