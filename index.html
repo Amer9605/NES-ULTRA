@@ -39,9 +39,27 @@
       to { background-position: -200px 0px; background-size: 2750px; }
     }
 
-    .navbar-brand {
-      color: black !important;
-    }
+   .navbar-brand {
+  color: #333; /* Dark gray for a professional look */
+  font-family: 'Poppins', sans-serif; /* Clean and modern font */
+  font-weight: 700; /* Bold for emphasis */
+  font-size: 1.5rem; /* Adjust size for visibility */
+  text-transform: uppercase; /* Make text stand out */
+  letter-spacing: 1px; /* Slight spacing for elegance */
+  text-decoration: none; /* Remove any default underline */
+  transition: color 0.3s ease-in-out; /* Smooth color transition */
+}
+
+.navbar-brand:hover {
+  color: #ffbf00; /* Golden color on hover for sophistication */
+  text-shadow: 0 0 10px rgba(255, 191, 0, 0.7); /* Subtle glow effect */
+}
+
+.navbar-brand:active {
+  color: #ff8000; /* Slightly darker tone for active state */
+  transform: scale(0.95); /* Add a slight click effect */
+  transition: transform 0.1s ease-in-out, color 0.1s ease-in-out;
+}
 
      .card {
       background: #fff;
@@ -456,8 +474,132 @@ div.fg{
         -webkit-text-stroke: 1px transparent;
     }
 }
+.cardee {
+  width: 190px;
+  height: 254px;
+  background: #07182E;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Stack text and arrow vertically */
+  overflow: hidden;
+  border-radius: 20px;
+  padding: 10px;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth animation */
+  margin: 10px;
+}
+
+/* Text inside the card */
+.cardee span {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  z-index: 2;
+  color: white;
+  font-size: 1.2em;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.cardee:hover {
+  box-shadow: 
+    0 0 20px rgba(255, 223, 0, 0.7), /* Gold glow */
+    0 0 40px rgba(255, 223, 0, 0.5), /* Outer gold halo */
+    0 0 15px rgba(255, 255, 255, 0.8), /* Diamond-like bright white */
+    0 0 50px rgba(255, 223, 0, 0.4); /* Subtle long gold shine */
+  transform: scale(1.05); /* Slightly enlarge the card */
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.cardee:active {
+  box-shadow: 
+    0 0 30px rgba(255, 255, 255, 0.9), /* Intense diamond shine */
+    0 0 50px rgba(255, 215, 0, 0.7); /* Bright gold shine */
+  transform: scale(0.98); /* Slight shrink on click */
+  transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+/* Rotating gradient background */
+.cardee::before {
+  content: '';
+  position: absolute;
+  width: 100px;
+  background-image: linear-gradient(180deg, rgb(0, 183, 255), rgb(255, 48, 255));
+  height: 130%;
+  animation: rotBGimg 3s linear infinite;
+  transition: all 0.2s linear;
+  z-index: 1;
+}
+
+@keyframes rotBGimg {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cardee::after {
+  content: '';
+  position: absolute;
+  background: #07182E;
+  inset: 5px;
+  border-radius: 15px;
+  z-index: 1;
+}
+
+/* Down arrow */
+.down-arrow {
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 12px solid white;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Arrow movement on hover */
+.cardee:hover .down-arrow {
+  transform: translateY(5px);
+}
+
+/* Container for cards */
+.con {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-evenly;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .cardee {
+    width: 150px;
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardee {
+    width: 120px;
+    height: 160px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .cardee {
+    width: 220px;
+    height: 280px;
+  }
+}
+
+
   </style>
 </head>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 <body>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg">
@@ -476,26 +618,33 @@ div.fg{
 
       <h3 >We provide the best educational resources in Network and security engneering Major in just University </h3>
       <p>Explore courses and enhance your knowledge</p><br></br>
-      <button onclick="showSection('courses')" class="button button-black" role="button" >📚 Explore Courses 📚 </button>
-      <br></br>
-      <button onclick="window.location.href='progaming.html'" class="button button-black" role="button">💻--PROGRAMMING--💻 </button>
-      <br></br>
-      <button onclick="window.location.href='ccna.html'" class="button button-black" role="button">🛜--CCNA RELATED--🛜 </button>
-<br></br>
-<button onclick="window.location.href='ctf.html'" class="button button-black" role="button"> 👨‍💻-CTF RELATED-👨‍💻 </button>
-<br></br>
-      <button onclick="window.location.href='https://www.just.edu.jo/ar/FacultiesandDepartments/it/Pages/viewplan.aspx?planno=565'" class="button button-blue" role="button">📋 Study Plan 2021 📋 </button> <br></br>
-      <button onclick="window.location.href='train.html'" class="button button-blue" role="button">🧑🏼‍🎓 about training 🧑🏼‍🎓</button> <br></br>
-      
-      <button onclick="window.location.href='https://drive.google.com/file/d/1OFL0xZu9XLqow9gAVup8E5_DXhd5r5Qq/view?fbclid=IwZXh0bgNhZW0CMTAAAR2akp1xWQ-J-qSIsH6VJKPeMaSRts2OEbzEBjku7zGJDpGL4jwiCBB3zvI_aem_ATxZXwjvlm4aJGLd60qrDUNBY7hAC3QsWyK3HtVOWy3toMKF8vCBhFXgOEdToF9LVLGof7b3wnQZWzj2z3bJd6xc'" class="button button-blue" role="button">🌴  Tree Plan 2021  🌴</button> <br></br>
       
 
- 
- 
-      <button onclick="window.location.href='https://www.just.edu.jo/aboutjust/map/Pages/default.aspx'" class="button button-blue " role="button">🗺️ JUST MAP 🗺️ </button>
-    </div>
-    
-    
+   <div class="con">
+  <div class="cardee" onclick="showSection('courses')">
+    <span>Explore Courses</span>
+    <div class="down-arrow"></div>
+  </div>
+  <div class="cardee" onclick="window.location.href='programming.html'">
+    <span>Programming</span>
+  </div>
+  <div class="cardee" onclick="window.location.href='ccna.html'">
+    <span>CCNA Related</span>
+  </div>
+  <div class="cardee" onclick="window.location.href='ctf.html'">
+    <span>CTF Related</span>
+  </div>
+  <div class="cardee" onclick="window.location.href='https://www.just.edu.jo/ar/FacultiesandDepartments/it/Pages/viewplan.aspx?planno=565'">
+    <span>Study Plan 2021</span>
+  </div>
+  <div class="cardee" onclick="window.location.href='train.html'">
+    <span>About Training</span>
+  </div>
+  <div class="cardee" onclick="window.location.href='https://drive.google.com/file/d/1OFL0xZu9XLqow9gAVup8E5_DXhd5r5Qq/view'">
+    <span>Tree Plan 2021</span>
+  </div>
+</div>
+
   </header>
 
   <!-- NES Team Section -->
