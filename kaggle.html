@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaggle API Integration</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #4f46e5;
+            --accent-color: #f59e0b;
+            --text-color: #1f2937;
+            --light-bg: #f3f4f6;
+            --dark-bg: #111827;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --transition: all 0.3s ease;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #3b82f6;
+            --secondary-color: #6366f1;
+            --accent-color: #fbbf24;
+            --text-color: #f3f4f6;
+            --light-bg: #1f2937;
+            --dark-bg: #f3f4f6;
+            --card-bg: rgba(31, 41, 55, 0.95);
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('logo.png');
+            background-size: 200px;
+            background-repeat: repeat;
+            opacity: 0.05;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .navbar {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--card-shadow);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            color: var(--primary-color) !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            width: auto;
+        }
+
+        .content {
+            max-width: 1200px;
+            margin: 80px auto 40px;
+            padding: 30px;
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .card-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 12px 20px;
+            color: var(--text-color);
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: none;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        .result-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .dataset-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+
+        .dataset-card:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .dataset-title {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .dataset-info {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading i {
+            color: var(--primary-color);
+            font-size: 2rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .theme-switch-wrapper {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            z-index: 1001;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            height: 34px;
+            position: relative;
+            width: 60px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            background-color: #fff;
+            bottom: 4px;
+            content: "";
+            height: 26px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 26px;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        .slider .fas {
+            color: #f1c40f;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: .4s;
+        }
+
+        .slider .fa-sun {
+            left: 8px;
+            opacity: 0;
+        }
+
+        .slider .fa-moon {
+            right: 8px;
+            opacity: 1;
+        }
+
+        input:checked + .slider .fa-sun {
+            opacity: 1;
+        }
+
+        input:checked + .slider .fa-moon {
+            opacity: 0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                margin: 60px 15px 30px;
+                padding: 20px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Switch -->
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox">
+            <input type="checkbox" id="checkbox" />
+            <div class="slider">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+            </div>
+        </label>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a class="navbar-brand" href="index.html">
+            <img src="logo.png" alt="NES&ULTRA Logo">
+            <span>NES&ULTRA</span>
+        </a>
+    </nav>
+
+    <div class="content">
+        <h1 class="page-title">Kaggle API Integration</h1>
+
+        <!-- API Configuration Card -->
+        <div class="card">
+            <h2 class="card-title">API Configuration</h2>
+            <div class="form-group">
+                <label for="username">Kaggle Username</label>
+                <input type="text" class="form-control" id="username" placeholder="Enter your Kaggle username">
+            </div>
+            <div class="form-group">
+                <label for="key">Kaggle API Key</label>
+                <input type="password" class="form-control" id="key" placeholder="Enter your Kaggle API key">
+            </div>
+            <button class="btn btn-primary" onclick="saveCredentials()">Save Credentials</button>
+        </div>
+
+        <!-- Dataset Search Card -->
+        <div class="card">
+            <h2 class="card-title">Search Datasets</h2>
+            <div class="form-group">
+                <input type="text" class="form-control" id="datasetSearch" placeholder="Search for datasets...">
+            </div>
+            <button class="btn btn-primary" onclick="searchDatasets()">Search</button>
+            <div class="loading" id="datasetLoading">
+                <i class="fas fa-spinner"></i>
+            </div>
+            <div class="result-container" id="datasetResults"></div>
+        </div>
+
+        <!-- Competition Search Card -->
+        <div class="card">
+            <h2 class="card-title">Search Competitions</h2>
+            <div class="form-group">
+                <input type="text" class="form-control" id="competitionSearch" placeholder="Search for competitions...">
+            </div>
+            <button class="btn btn-primary" onclick="searchCompetitions()">Search</button>
+            <div class="loading" id="competitionLoading">
+                <i class="fas fa-spinner"></i>
+            </div>
+            <div class="result-container" id="competitionResults"></div>
+        </div>
+
+        <!-- Notebook Search Card -->
+        <div class="card">
+            <h2 class="card-title">Search Notebooks</h2>
+            <div class="form-group">
+                <input type="text" class="form-control" id="notebookSearch" placeholder="Search for notebooks...">
+            </div>
+            <button class="btn btn-primary" onclick="searchNotebooks()">Search</button>
+            <div class="loading" id="notebookLoading">
+                <i class="fas fa-spinner"></i>
+            </div>
+            <div class="result-container" id="notebookResults"></div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        // Theme switcher
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+            if (currentTheme === 'dark') {
+                toggleSwitch.checked = true;
+            }
+        }
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            }    
+        }
+
+        toggleSwitch.addEventListener('change', switchTheme, false);
+
+        // Kaggle API Functions
+        function saveCredentials() {
+            const username = document.getElementById('username').value;
+            const key = document.getElementById('key').value;
+            
+            if (username && key) {
+                localStorage.setItem('kaggle_username', username);
+                localStorage.setItem('kaggle_key', key);
+                alert('Credentials saved successfully!');
+            } else {
+                alert('Please enter both username and API key');
+            }
+        }
+
+        async function searchDatasets() {
+            const searchTerm = document.getElementById('datasetSearch').value;
+            if (!searchTerm) return;
+
+            const loading = document.getElementById('datasetLoading');
+            const results = document.getElementById('datasetResults');
+            
+            loading.style.display = 'block';
+            results.innerHTML = '';
+
+            try {
+                const response = await fetch(`https://www.kaggle.com/api/v1/datasets/list?search=${searchTerm}`, {
+                    headers: {
+                        'Authorization': `Basic ${btoa(localStorage.getItem('kaggle_username') + ':' + localStorage.getItem('kaggle_key'))}`
+                    }
+                });
+
+                const data = await response.json();
+                
+                data.forEach(dataset => {
+                    const card = document.createElement('div');
+                    card.className = 'dataset-card';
+                    card.innerHTML = `
+                        <div class="dataset-title">${dataset.title}</div>
+                        <div class="dataset-info">
+                            <p>Size: ${dataset.size}</p>
+                            <p>Downloads: ${dataset.downloadCount}</p>
+                            <p>Votes: ${dataset.voteCount}</p>
+                        </div>
+                    `;
+                    results.appendChild(card);
+                });
+            } catch (error) {
+                results.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        async function searchCompetitions() {
+            const searchTerm = document.getElementById('competitionSearch').value;
+            if (!searchTerm) return;
+
+            const loading = document.getElementById('competitionLoading');
+            const results = document.getElementById('competitionResults');
+            
+            loading.style.display = 'block';
+            results.innerHTML = '';
+
+            try {
+                const response = await fetch(`https://www.kaggle.com/api/v1/competitions/list?search=${searchTerm}`, {
+                    headers: {
+                        'Authorization': `Basic ${btoa(localStorage.getItem('kaggle_username') + ':' + localStorage.getItem('kaggle_key'))}`
+                    }
+                });
+
+                const data = await response.json();
+                
+                data.forEach(competition => {
+                    const card = document.createElement('div');
+                    card.className = 'dataset-card';
+                    card.innerHTML = `
+                        <div class="dataset-title">${competition.title}</div>
+                        <div class="dataset-info">
+                            <p>Category: ${competition.category}</p>
+                            <p>Deadline: ${new Date(competition.deadline).toLocaleDateString()}</p>
+                            <p>Prize: ${competition.rewardDisplay}</p>
+                        </div>
+                    `;
+                    results.appendChild(card);
+                });
+            } catch (error) {
+                results.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        async function searchNotebooks() {
+            const searchTerm = document.getElementById('notebookSearch').value;
+            if (!searchTerm) return;
+
+            const loading = document.getElementById('notebookLoading');
+            const results = document.getElementById('notebookResults');
+            
+            loading.style.display = 'block';
+            results.innerHTML = '';
+
+            try {
+                const response = await fetch(`https://www.kaggle.com/api/v1/kernels/list?search=${searchTerm}`, {
+                    headers: {
+                        'Authorization': `Basic ${btoa(localStorage.getItem('ameralghanem') + ':' + localStorage.getItem('495613eec781e348f0d55f9ef25585b1'))}`
+                    }
+                });
+
+                const data = await response.json();
+                
+                data.forEach(notebook => {
+                    const card = document.createElement('div');
+                    card.className = 'dataset-card';
+                    card.innerHTML = `
+                        <div class="dataset-title">${notebook.title}</div>
+                        <div class="dataset-info">
+                            <p>Author: ${notebook.author}</p>
+                            <p>Language: ${notebook.language}</p>
+                            <p>Votes: ${notebook.voteCount}</p>
+                        </div>
+                    `;
+                    results.appendChild(card);
+                });
+            } catch (error) {
+                results.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        // Load saved credentials on page load
+        window.onload = function() {
+            const savedUsername = localStorage.getItem('kaggle_username');
+            const savedKey = localStorage.getItem('kaggle_key');
+            
+            if (savedUsername) document.getElementById('username').value = savedUsername;
+            if (savedKey) document.getElementById('key').value = savedKey;
+        }
+    </script>
+</body>
+</html> 
