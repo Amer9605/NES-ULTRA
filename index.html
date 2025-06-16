@@ -422,28 +422,47 @@
 
     .footer {
       background: var(--dark-bg);
-      color: white;
+      color: var(--text-color);
       padding: 60px 0 40px;
       margin-top: 60px;
+    }
+
+    [data-theme="dark"] .footer {
+      background: #1a1a1a;
+      color: #e5e7eb;
     }
 
     .footer h4 {
       font-weight: 600;
       margin-bottom: 20px;
       font-family: 'Poppins', sans-serif;
+      color: var(--text-color);
+    }
+
+    [data-theme="dark"] .footer h4 {
+      color: #f3f4f6;
     }
 
     .footer-text {
       font-size: 1.1em;
       opacity: 0.9;
       margin-bottom: 10px;
+      color: var(--text-color);
+    }
+
+    [data-theme="dark"] .footer-text {
+      color: #d1d5db;
     }
 
     .social-links a {
       font-size: 1.2em;
       transition: var(--transition);
-      color: white;
+      color: var(--text-color);
       margin-right: 15px;
+    }
+
+    [data-theme="dark"] .social-links a {
+      color: #e5e7eb;
     }
 
     .social-links a:hover {
