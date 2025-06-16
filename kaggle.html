@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaggle API Integration</title>
+    <title>Kaggle Integration</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -114,14 +114,21 @@
             border-radius: 2px;
         }
 
+        .search-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
         .card {
             background: var(--card-bg);
             border-radius: 20px;
             box-shadow: var(--card-shadow);
             padding: 25px;
-            margin-bottom: 30px;
             transition: var(--transition);
             backdrop-filter: blur(10px);
+            height: 100%;
         }
 
         .card:hover {
@@ -134,24 +141,33 @@
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            color: var(--accent-color);
         }
 
         .form-group {
             margin-bottom: 20px;
         }
 
-        .form-control {
+        .search-input {
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid transparent;
             border-radius: 10px;
             padding: 12px 20px;
             color: var(--text-color);
             transition: var(--transition);
+            width: 100%;
         }
 
-        .form-control:focus {
+        .search-input:focus {
             border-color: var(--primary-color);
             box-shadow: none;
+            outline: none;
         }
 
         .btn {
@@ -159,16 +175,21 @@
             border-radius: 10px;
             font-weight: 500;
             transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .btn-primary {
             background: var(--primary-color);
             border: none;
+            color: white;
         }
 
         .btn-primary:hover {
             background: var(--accent-color);
             transform: translateY(-2px);
+            color: white;
         }
 
         .result-container {
@@ -176,33 +197,65 @@
             padding: 20px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            max-height: 400px;
+            max-height: 500px;
             overflow-y: auto;
         }
 
-        .dataset-card {
+        .result-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
-            padding: 15px;
+            padding: 20px;
             margin-bottom: 15px;
             transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .dataset-card:hover {
+        .result-card:hover {
             transform: translateX(5px);
             background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary-color);
         }
 
-        .dataset-title {
+        .result-title {
             color: var(--primary-color);
             font-weight: 600;
+            font-size: 1.2rem;
             margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .dataset-info {
+        .result-info {
             font-size: 0.9rem;
             color: var(--text-color);
             opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .action-btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
         }
 
         .loading {
@@ -300,6 +353,26 @@
             opacity: 0;
         }
 
+        .stats {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .stat-item i {
+            color: var(--accent-color);
+        }
+
         @media (max-width: 768px) {
             .content {
                 margin: 60px 15px 30px;
@@ -312,6 +385,15 @@
 
             .card {
                 padding: 20px;
+            }
+
+            .result-actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
@@ -337,59 +419,65 @@
     </nav>
 
     <div class="content">
-        <h1 class="page-title">Kaggle API Integration</h1>
+        <h1 class="page-title">Kaggle Integration</h1>
 
-        <!-- API Configuration Card -->
-        <div class="card">
-            <h2 class="card-title">API Configuration</h2>
-            <div class="form-group">
-                <label for="username">Kaggle Username</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter your Kaggle username">
+        <div class="search-section">
+            <!-- Dataset Search Card -->
+            <div class="card">
+                <h2 class="card-title">
+                    <i class="fas fa-database"></i>
+                    Search Datasets
+                </h2>
+                <div class="form-group">
+                    <input type="text" class="search-input" id="datasetSearch" placeholder="Search for datasets...">
+                </div>
+                <button class="btn btn-primary" onclick="searchDatasets()">
+                    <i class="fas fa-search"></i>
+                    Search
+                </button>
+                <div class="loading" id="datasetLoading">
+                    <i class="fas fa-spinner"></i>
+                </div>
+                <div class="result-container" id="datasetResults"></div>
             </div>
-            <div class="form-group">
-                <label for="key">Kaggle API Key</label>
-                <input type="password" class="form-control" id="key" placeholder="Enter your Kaggle API key">
-            </div>
-            <button class="btn btn-primary" onclick="saveCredentials()">Save Credentials</button>
-        </div>
 
-        <!-- Dataset Search Card -->
-        <div class="card">
-            <h2 class="card-title">Search Datasets</h2>
-            <div class="form-group">
-                <input type="text" class="form-control" id="datasetSearch" placeholder="Search for datasets...">
+            <!-- Competition Search Card -->
+            <div class="card">
+                <h2 class="card-title">
+                    <i class="fas fa-trophy"></i>
+                    Search Competitions
+                </h2>
+                <div class="form-group">
+                    <input type="text" class="search-input" id="competitionSearch" placeholder="Search for competitions...">
+                </div>
+                <button class="btn btn-primary" onclick="searchCompetitions()">
+                    <i class="fas fa-search"></i>
+                    Search
+                </button>
+                <div class="loading" id="competitionLoading">
+                    <i class="fas fa-spinner"></i>
+                </div>
+                <div class="result-container" id="competitionResults"></div>
             </div>
-            <button class="btn btn-primary" onclick="searchDatasets()">Search</button>
-            <div class="loading" id="datasetLoading">
-                <i class="fas fa-spinner"></i>
-            </div>
-            <div class="result-container" id="datasetResults"></div>
-        </div>
 
-        <!-- Competition Search Card -->
-        <div class="card">
-            <h2 class="card-title">Search Competitions</h2>
-            <div class="form-group">
-                <input type="text" class="form-control" id="competitionSearch" placeholder="Search for competitions...">
+            <!-- Notebook Search Card -->
+            <div class="card">
+                <h2 class="card-title">
+                    <i class="fas fa-book"></i>
+                    Search Notebooks
+                </h2>
+                <div class="form-group">
+                    <input type="text" class="search-input" id="notebookSearch" placeholder="Search for notebooks...">
+                </div>
+                <button class="btn btn-primary" onclick="searchNotebooks()">
+                    <i class="fas fa-search"></i>
+                    Search
+                </button>
+                <div class="loading" id="notebookLoading">
+                    <i class="fas fa-spinner"></i>
+                </div>
+                <div class="result-container" id="notebookResults"></div>
             </div>
-            <button class="btn btn-primary" onclick="searchCompetitions()">Search</button>
-            <div class="loading" id="competitionLoading">
-                <i class="fas fa-spinner"></i>
-            </div>
-            <div class="result-container" id="competitionResults"></div>
-        </div>
-
-        <!-- Notebook Search Card -->
-        <div class="card">
-            <h2 class="card-title">Search Notebooks</h2>
-            <div class="form-group">
-                <input type="text" class="form-control" id="notebookSearch" placeholder="Search for notebooks...">
-            </div>
-            <button class="btn btn-primary" onclick="searchNotebooks()">Search</button>
-            <div class="loading" id="notebookLoading">
-                <i class="fas fa-spinner"></i>
-            </div>
-            <div class="result-container" id="notebookResults"></div>
         </div>
     </div>
 
@@ -421,19 +509,6 @@
         toggleSwitch.addEventListener('change', switchTheme, false);
 
         // Kaggle API Functions
-        function saveCredentials() {
-            const username = document.getElementById('username').value;
-            const key = document.getElementById('key').value;
-            
-            if (username && key) {
-                localStorage.setItem('kaggle_username', username);
-                localStorage.setItem('kaggle_key', key);
-                alert('Credentials saved successfully!');
-            } else {
-                alert('Please enter both username and API key');
-            }
-        }
-
         async function searchDatasets() {
             const searchTerm = document.getElementById('datasetSearch').value;
             if (!searchTerm) return;
@@ -447,7 +522,7 @@
             try {
                 const response = await fetch(`https://www.kaggle.com/api/v1/datasets/list?search=${searchTerm}`, {
                     headers: {
-                        'Authorization': `Basic ${btoa(localStorage.getItem('kaggle_username') + ':' + localStorage.getItem('kaggle_key'))}`
+                        'Authorization': `Basic ${btoa('ameralghanem:495613eec781e348f0d55f9ef25585b1')}`
                     }
                 });
 
@@ -455,13 +530,34 @@
                 
                 data.forEach(dataset => {
                     const card = document.createElement('div');
-                    card.className = 'dataset-card';
+                    card.className = 'result-card';
                     card.innerHTML = `
-                        <div class="dataset-title">${dataset.title}</div>
-                        <div class="dataset-info">
+                        <div class="result-title">
+                            ${dataset.title}
+                            <div class="stats">
+                                <span class="stat-item">
+                                    <i class="fas fa-download"></i>
+                                    ${dataset.downloadCount}
+                                </span>
+                                <span class="stat-item">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    ${dataset.voteCount}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="result-info">
                             <p>Size: ${dataset.size}</p>
-                            <p>Downloads: ${dataset.downloadCount}</p>
-                            <p>Votes: ${dataset.voteCount}</p>
+                            <p>Last Updated: ${new Date(dataset.lastUpdated).toLocaleDateString()}</p>
+                        </div>
+                        <div class="result-actions">
+                            <button class="action-btn" onclick="downloadDataset('${dataset.ref}')">
+                                <i class="fas fa-download"></i>
+                                Download
+                            </button>
+                            <button class="action-btn" onclick="viewDataset('${dataset.ref}')">
+                                <i class="fas fa-external-link-alt"></i>
+                                View on Kaggle
+                            </button>
                         </div>
                     `;
                     results.appendChild(card);
@@ -486,7 +582,7 @@
             try {
                 const response = await fetch(`https://www.kaggle.com/api/v1/competitions/list?search=${searchTerm}`, {
                     headers: {
-                        'Authorization': `Basic ${btoa(localStorage.getItem('kaggle_username') + ':' + localStorage.getItem('kaggle_key'))}`
+                        'Authorization': `Basic ${btoa('ameralghanem:495613eec781e348f0d55f9ef25585b1')}`
                     }
                 });
 
@@ -494,13 +590,35 @@
                 
                 data.forEach(competition => {
                     const card = document.createElement('div');
-                    card.className = 'dataset-card';
+                    card.className = 'result-card';
                     card.innerHTML = `
-                        <div class="dataset-title">${competition.title}</div>
-                        <div class="dataset-info">
+                        <div class="result-title">
+                            ${competition.title}
+                            <div class="stats">
+                                <span class="stat-item">
+                                    <i class="fas fa-users"></i>
+                                    ${competition.teamCount}
+                                </span>
+                                <span class="stat-item">
+                                    <i class="fas fa-trophy"></i>
+                                    ${competition.rewardDisplay}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="result-info">
                             <p>Category: ${competition.category}</p>
                             <p>Deadline: ${new Date(competition.deadline).toLocaleDateString()}</p>
-                            <p>Prize: ${competition.rewardDisplay}</p>
+                            <p>Description: ${competition.description.substring(0, 150)}...</p>
+                        </div>
+                        <div class="result-actions">
+                            <button class="action-btn" onclick="joinCompetition('${competition.ref}')">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Join Competition
+                            </button>
+                            <button class="action-btn" onclick="viewCompetition('${competition.ref}')">
+                                <i class="fas fa-external-link-alt"></i>
+                                View Details
+                            </button>
                         </div>
                     `;
                     results.appendChild(card);
@@ -525,7 +643,7 @@
             try {
                 const response = await fetch(`https://www.kaggle.com/api/v1/kernels/list?search=${searchTerm}`, {
                     headers: {
-                        'Authorization': `Basic ${btoa(localStorage.getItem('ameralghanem') + ':' + localStorage.getItem('495613eec781e348f0d55f9ef25585b1'))}`
+                        'Authorization': `Basic ${btoa('ameralghanem:495613eec781e348f0d55f9ef25585b1')}`
                     }
                 });
 
@@ -533,13 +651,35 @@
                 
                 data.forEach(notebook => {
                     const card = document.createElement('div');
-                    card.className = 'dataset-card';
+                    card.className = 'result-card';
                     card.innerHTML = `
-                        <div class="dataset-title">${notebook.title}</div>
-                        <div class="dataset-info">
+                        <div class="result-title">
+                            ${notebook.title}
+                            <div class="stats">
+                                <span class="stat-item">
+                                    <i class="fas fa-code"></i>
+                                    ${notebook.language}
+                                </span>
+                                <span class="stat-item">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    ${notebook.voteCount}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="result-info">
                             <p>Author: ${notebook.author}</p>
-                            <p>Language: ${notebook.language}</p>
-                            <p>Votes: ${notebook.voteCount}</p>
+                            <p>Last Updated: ${new Date(notebook.lastUpdated).toLocaleDateString()}</p>
+                            <p>Description: ${notebook.description.substring(0, 150)}...</p>
+                        </div>
+                        <div class="result-actions">
+                            <button class="action-btn" onclick="forkNotebook('${notebook.ref}')">
+                                <i class="fas fa-code-branch"></i>
+                                Fork Notebook
+                            </button>
+                            <button class="action-btn" onclick="viewNotebook('${notebook.ref}')">
+                                <i class="fas fa-external-link-alt"></i>
+                                View Notebook
+                            </button>
                         </div>
                     `;
                     results.appendChild(card);
@@ -551,13 +691,47 @@
             }
         }
 
-        // Load saved credentials on page load
-        window.onload = function() {
-            const savedUsername = localStorage.getItem('kaggle_username');
-            const savedKey = localStorage.getItem('kaggle_key');
-            
-            if (savedUsername) document.getElementById('username').value = savedUsername;
-            if (savedKey) document.getElementById('key').value = savedKey;
+        // Action Functions
+        async function downloadDataset(ref) {
+            try {
+                const response = await fetch(`https://www.kaggle.com/api/v1/datasets/download/${ref}`, {
+                    headers: {
+                        'Authorization': `Basic ${btoa('ameralghanem:495613eec781e348f0d55f9ef25585b1')}`
+                    }
+                });
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${ref}.zip`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } catch (error) {
+                alert(`Error downloading dataset: ${error.message}`);
+            }
+        }
+
+        function viewDataset(ref) {
+            window.open(`https://www.kaggle.com/datasets/${ref}`, '_blank');
+        }
+
+        function joinCompetition(ref) {
+            window.open(`https://www.kaggle.com/c/${ref}`, '_blank');
+        }
+
+        function viewCompetition(ref) {
+            window.open(`https://www.kaggle.com/c/${ref}`, '_blank');
+        }
+
+        function forkNotebook(ref) {
+            window.open(`https://www.kaggle.com/kernels/fork/${ref}`, '_blank');
+        }
+
+        function viewNotebook(ref) {
+            window.open(`https://www.kaggle.com/kernels/${ref}`, '_blank');
         }
     </script>
 </body>
