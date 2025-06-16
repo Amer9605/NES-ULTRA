@@ -116,8 +116,8 @@
 
         .search-section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
             margin-bottom: 30px;
         }
 
@@ -129,6 +129,24 @@
             transition: var(--transition);
             backdrop-filter: blur(10px);
             height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .card:hover::before {
+            opacity: 1;
         }
 
         .card:hover {
@@ -144,10 +162,16 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(37, 99, 235, 0.1);
         }
 
         .card-title i {
             color: var(--accent-color);
+            font-size: 1.8rem;
+            background: rgba(245, 158, 11, 0.1);
+            padding: 10px;
+            border-radius: 12px;
         }
 
         .form-group {
@@ -162,12 +186,18 @@
             color: var(--text-color);
             transition: var(--transition);
             width: 100%;
+            font-size: 1rem;
         }
 
         .search-input:focus {
             border-color: var(--primary-color);
-            box-shadow: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
             outline: none;
+        }
+
+        .search-input::placeholder {
+            color: var(--text-color);
+            opacity: 0.6;
         }
 
         .btn {
@@ -178,12 +208,33 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .btn-primary {
             background: var(--primary-color);
             border: none;
             color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: translateX(-100%);
+            transition: 0.5s;
+        }
+
+        .btn-primary:hover::after {
+            transform: translateX(100%);
         }
 
         .btn-primary:hover {
@@ -199,15 +250,48 @@
             border-radius: 10px;
             max-height: 500px;
             overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) transparent;
+        }
+
+        .result-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .result-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .result-container::-webkit-scrollbar-thumb {
+            background-color: var(--primary-color);
+            border-radius: 20px;
         }
 
         .result-card {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
+            border-radius: 15px;
             padding: 20px;
             margin-bottom: 15px;
             transition: var(--transition);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .result-card:hover::before {
+            opacity: 1;
         }
 
         .result-card:hover {
@@ -224,6 +308,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .result-info {
@@ -231,12 +317,14 @@
             color: var(--text-color);
             opacity: 0.8;
             margin-bottom: 15px;
+            line-height: 1.6;
         }
 
         .result-actions {
             display: flex;
             gap: 10px;
             margin-top: 15px;
+            flex-wrap: wrap;
         }
 
         .action-btn {
@@ -251,6 +339,9 @@
             display: inline-flex;
             align-items: center;
             gap: 5px;
+            flex: 1;
+            justify-content: center;
+            min-width: 120px;
         }
 
         .action-btn:hover {
@@ -262,6 +353,7 @@
             display: none;
             text-align: center;
             padding: 20px;
+            position: relative;
         }
 
         .loading i {
@@ -270,9 +362,35 @@
             animation: spin 1s linear infinite;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .loading::after {
+            content: 'Loading...';
+            display: block;
+            margin-top: 10px;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-color);
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        .error-message {
+            background: rgba(220, 38, 38, 0.1);
+            color: #dc2626;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .error-message i {
+            font-size: 1.2rem;
         }
 
         .theme-switch-wrapper {
@@ -357,6 +475,7 @@
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
+            margin-top: 10px;
         }
 
         .stat-item {
@@ -367,6 +486,12 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            transition: var(--transition);
+        }
+
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         .stat-item i {
@@ -374,6 +499,10 @@
         }
 
         @media (max-width: 768px) {
+            .search-section {
+                grid-template-columns: 1fr;
+            }
+
             .content {
                 margin: 60px 15px 30px;
                 padding: 20px;
@@ -393,6 +522,9 @@
 
             .action-btn {
                 width: 100%;
+            }
+
+            .stats {
                 justify-content: center;
             }
         }
@@ -528,6 +660,11 @@
 
                 const data = await response.json();
                 
+                if (data.length === 0) {
+                    results.innerHTML = '<div class="no-results">No datasets found matching your search criteria.</div>';
+                    return;
+                }
+
                 data.forEach(dataset => {
                     const card = document.createElement('div');
                     card.className = 'result-card';
@@ -535,19 +672,24 @@
                         <div class="result-title">
                             ${dataset.title}
                             <div class="stats">
-                                <span class="stat-item">
+                                <span class="stat-item" title="Downloads">
                                     <i class="fas fa-download"></i>
-                                    ${dataset.downloadCount}
+                                    ${dataset.downloadCount.toLocaleString()}
                                 </span>
-                                <span class="stat-item">
+                                <span class="stat-item" title="Votes">
                                     <i class="fas fa-thumbs-up"></i>
-                                    ${dataset.voteCount}
+                                    ${dataset.voteCount.toLocaleString()}
+                                </span>
+                                <span class="stat-item" title="Size">
+                                    <i class="fas fa-database"></i>
+                                    ${dataset.size}
                                 </span>
                             </div>
                         </div>
                         <div class="result-info">
-                            <p>Size: ${dataset.size}</p>
-                            <p>Last Updated: ${new Date(dataset.lastUpdated).toLocaleDateString()}</p>
+                            <p><strong>Last Updated:</strong> ${new Date(dataset.lastUpdated).toLocaleDateString()}</p>
+                            <p><strong>License:</strong> ${dataset.license || 'Not specified'}</p>
+                            <p><strong>Tags:</strong> ${dataset.tags ? dataset.tags.join(', ') : 'None'}</p>
                         </div>
                         <div class="result-actions">
                             <button class="action-btn" onclick="downloadDataset('${dataset.ref}')">
@@ -563,7 +705,12 @@
                     results.appendChild(card);
                 });
             } catch (error) {
-                results.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+                results.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Error: ${error.message}
+                    </div>
+                `;
             } finally {
                 loading.style.display = 'none';
             }
@@ -588,6 +735,11 @@
 
                 const data = await response.json();
                 
+                if (data.length === 0) {
+                    results.innerHTML = '<div class="no-results">No competitions found matching your search criteria.</div>';
+                    return;
+                }
+
                 data.forEach(competition => {
                     const card = document.createElement('div');
                     card.className = 'result-card';
@@ -595,20 +747,24 @@
                         <div class="result-title">
                             ${competition.title}
                             <div class="stats">
-                                <span class="stat-item">
+                                <span class="stat-item" title="Teams">
                                     <i class="fas fa-users"></i>
-                                    ${competition.teamCount}
+                                    ${competition.teamCount.toLocaleString()}
                                 </span>
-                                <span class="stat-item">
+                                <span class="stat-item" title="Prize">
                                     <i class="fas fa-trophy"></i>
                                     ${competition.rewardDisplay}
+                                </span>
+                                <span class="stat-item" title="Category">
+                                    <i class="fas fa-tag"></i>
+                                    ${competition.category}
                                 </span>
                             </div>
                         </div>
                         <div class="result-info">
-                            <p>Category: ${competition.category}</p>
-                            <p>Deadline: ${new Date(competition.deadline).toLocaleDateString()}</p>
-                            <p>Description: ${competition.description.substring(0, 150)}...</p>
+                            <p><strong>Deadline:</strong> ${new Date(competition.deadline).toLocaleDateString()}</p>
+                            <p><strong>Description:</strong> ${competition.description.substring(0, 150)}...</p>
+                            <p><strong>Evaluation Metric:</strong> ${competition.evaluationMetric || 'Not specified'}</p>
                         </div>
                         <div class="result-actions">
                             <button class="action-btn" onclick="joinCompetition('${competition.ref}')">
@@ -624,7 +780,12 @@
                     results.appendChild(card);
                 });
             } catch (error) {
-                results.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+                results.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Error: ${error.message}
+                    </div>
+                `;
             } finally {
                 loading.style.display = 'none';
             }
@@ -649,6 +810,11 @@
 
                 const data = await response.json();
                 
+                if (data.length === 0) {
+                    results.innerHTML = '<div class="no-results">No notebooks found matching your search criteria.</div>';
+                    return;
+                }
+
                 data.forEach(notebook => {
                     const card = document.createElement('div');
                     card.className = 'result-card';
@@ -656,20 +822,24 @@
                         <div class="result-title">
                             ${notebook.title}
                             <div class="stats">
-                                <span class="stat-item">
+                                <span class="stat-item" title="Language">
                                     <i class="fas fa-code"></i>
                                     ${notebook.language}
                                 </span>
-                                <span class="stat-item">
+                                <span class="stat-item" title="Votes">
                                     <i class="fas fa-thumbs-up"></i>
-                                    ${notebook.voteCount}
+                                    ${notebook.voteCount.toLocaleString()}
+                                </span>
+                                <span class="stat-item" title="Comments">
+                                    <i class="fas fa-comments"></i>
+                                    ${notebook.commentCount.toLocaleString()}
                                 </span>
                             </div>
                         </div>
                         <div class="result-info">
-                            <p>Author: ${notebook.author}</p>
-                            <p>Last Updated: ${new Date(notebook.lastUpdated).toLocaleDateString()}</p>
-                            <p>Description: ${notebook.description.substring(0, 150)}...</p>
+                            <p><strong>Author:</strong> ${notebook.author}</p>
+                            <p><strong>Last Updated:</strong> ${new Date(notebook.lastUpdated).toLocaleDateString()}</p>
+                            <p><strong>Description:</strong> ${notebook.description.substring(0, 150)}...</p>
                         </div>
                         <div class="result-actions">
                             <button class="action-btn" onclick="forkNotebook('${notebook.ref}')">
@@ -685,7 +855,12 @@
                     results.appendChild(card);
                 });
             } catch (error) {
-                results.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+                results.innerHTML = `
+                    <div class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        Error: ${error.message}
+                    </div>
+                `;
             } finally {
                 loading.style.display = 'none';
             }
