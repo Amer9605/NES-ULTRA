@@ -1,199 +1,378 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>التدريب العملي</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-       <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:200" rel="stylesheet">
-  <style>
-  *{
-      padding: 0;
-      margin: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background-image: url('12481499.png');
-      background-size: cover;
-      -webkit-animation: slidein 100s;
-      animation: slidein 100s;
-      -webkit-animation-fill-mode: forwards;
-      animation-fill-mode: forwards;
-      -webkit-animation-iteration-count: infinite;
-      animation-iteration-count: infinite;
-      -webkit-animation-direction: alternate;
-      animation-direction: alternate;
-      color: black;
-      font-family: 'Roboto', sans-serif;
-    }
-
-    @-webkit-keyframes slidein {
-      from { background-position: top; background-size: 3000px; }
-      to { background-position: -100px 0px; background-size: 2750px; }
-    }
-
-    @keyframes slidein {
-      from { background-position: top; background-size: 3000px; }
-      to { background-position: -200px 0px; background-size: 2750px; }
-    }
-
-    .navbar-brand {
-      color: black !important;
-    }
-        .content {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-             background-color: skyblue;
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #4f46e5;
+            --accent-color: #f59e0b;
+            --text-color: #1f2937;
+            --light-bg: #f3f4f6;
+            --dark-bg: #111827;
+            --card-bg: rgba(255, 255, 255, 0.95);
+            --transition: all 0.3s ease;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --hover-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
-        .section {
-            margin-bottom: 20px;
-            
-        }
-        .section h2 {
-            background-color: #007BFF;
-            color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .section ul, .section ol {
-            list-style: none;
+
+        * {
             padding: 0;
-            text-align: right;
+            margin: 0;
+            box-sizing: border-box;
         }
-        .section ul li, .section ol li {
-            margin-bottom: 10px;
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
         }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('12481499.png');
+            background-size: cover;
+            opacity: 0.1;
+            z-index: -1;
+            animation: slidein 100s infinite alternate;
+        }
+
+        @keyframes slidein {
+            from { background-position: top; background-size: 3000px; }
+            to { background-position: -200px 0px; background-size: 2750px; }
+        }
+
+        .navbar {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--card-shadow);
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-brand {
+            color: var(--primary-color) !important;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .content {
+            max-width: 1000px;
+            margin: 80px auto 40px;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 15px;
+            transition: var(--transition);
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .section p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
         .button {
             display: inline-block;
-            padding: 10px 20px;
-            margin: 5px 0;
-            font-size: 16px;
-            color: #fff;
-            background-color: #007BFF;
+            padding: 12px 25px;
+            margin: 10px 5px;
+            font-size: 1rem;
+            color: white;
+            background: var(--primary-color);
             border: none;
-            border-radius: 5px;
-            text-align: center;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: var(--card-shadow);
+        }
+
+        .button:hover {
+            background: var(--accent-color);
+            transform: translateY(-2px);
+            box-shadow: var(--hover-shadow);
+            color: white;
             text-decoration: none;
         }
-        .button:hover {
-            background-color: #0056b3;
+
+        .question {
+            background: rgba(37, 99, 235, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-right: 4px solid var(--primary-color);
         }
-        ol li {
-            list-style-type: none;
-            counter-increment: item;
+
+        .answer {
+            background: rgba(245, 158, 11, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-right: 4px solid var(--accent-color);
         }
-        ol li:before {
-            content: counter(item);
-            margin-right: 5px;
-            font-size: 80%;
-            background-color: #f9dd94;
-            color: #7eb4e2;
-            font-weight: bold;
-            padding: 3px 8px;
-            border-radius: 3px;
+
+        .toc {
+            background: rgba(79, 70, 229, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .toc p {
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .company-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .company-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+        }
+
+        .company-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--hover-shadow);
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                margin: 60px 15px 30px;
+                padding: 20px;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 20px;
+            }
+
+            .section h2 {
+                font-size: 1.5rem;
+            }
+
+            .button {
+                display: block;
+                width: 100%;
+                margin: 10px 0;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
+    <nav class="navbar">
+        <a class="navbar-brand" href="index.html">NES&ULTRA</a>
+    </nav>
+
     <div class="content">
-        <h1>التدريب العملي</h1>
+        <h1 class="page-title">التدريب العملي</h1>
+        
         <div class="section">
-            <p> FROM ULTRA </p>
+            <h2>جدول المحتويات</h2>
+            <div class="toc">
+                <p>1. ما يجب فعله قبل التدريب</p>
+                <p>2. خطوات التدريب</p>
+                <p>3. مصادر مهمة</p>
+                <p>4. أسماء شركات</p>
+            </div>
         </div>
 
-      <div class="section">
-    <h2>Table Of Contents </h2>
-    <p>1. ما يجب فعله قبل التدريب.</p>
-    <p>2. خطوات التدريب.</p>
-    <p>3. مصادر مهمة.</p>
-    <p>5. أسماء شركات.</p>
-</div>
+        <div class="section">
+            <h2>1. ما يجب فعله قبل التدريب</h2>
+            <div class="question">
+                <p>اختيار مجال وتنمية القدرات فيه</p>
+            </div>
+            <div class="answer">
+                <p>تزبيط كل من LinkedIn, CV, Github</p>
+                <p>دراسة متطلبات سوق العمل</p>
+                <p>التدريب الاختياري</p>
+            </div>
 
-<div class="section">
-    <h2>1. ما يجب فعله قبل التدريب:</h2>
-    <p>اختيار مجال وتنمية القدرات فيه.</p>
-    <p>تزبيط كل من LinkedIn, CV, Github.</p>
-    <p>دراسة متطلبات سوق العمل.</p>
-    <p>التدريب الاختياري.</p>
-    <p>س: طب مش لازم أعرف متطلبات السوق قبل ما أبلش بمجال؟</p>
-    <p>- يس، لكن تبلش بمجال إنت حابه ممكن تتحمس وتتحدى كثير ظروف لتصير، على عكس مجال إنت مجبر عليه.</p>
-    <p>س: كيف اختار مجال طيب؟</p>
-    <p>- في كثير امور بتساعدك:</p>
-    <p>فكر بمشروع انت مهتم تعمله</p>
-    <p>حل مشكلة انت بتواجهها بالكود</p>
-    <p>إسأل حالك "كيف عملو كذا" وحاول اعمل زيه</p>
-    <p>س: شو في مجالات بالسوق؟</p>
-    <p>Note: المحتوى هنا متجدد</p>
-    <p>Quality Assurance.</p>
-    <p>Frontend Developer.</p>
-    <p>Backend Developer.</p>
-    <p>Full-Stack Developer. (Combines last 2)</p>
-    <p>Machine Learning Engineer.</p>
-    <p>Mobile Developer. (using cross-platform)</p>
-    <p>Android Developer.</p>
-    <p>IOS Developer.</p>
-    <p>PL/SQL Developer.</p>
-    <p>Software Implementation Developer.</p>
-    <p>Database Developer.</p>
-    <p>Network Administrator.</p>
-    <p>Game Developer.</p>
-    <p>Software Embedded Developer.</p>
-    <p>س: كيف ازبط كل من LinkedIn, CV, Github:</p>
-    <p>- ناقشناهم ببوستات سابقة على النحو التالي</p>
-    <p><a class="button" href="https://m.facebook.com/story.php?story_fbid=252314470454027&id=100070264275888&mibextid=Nif5oz" target="_blank">حساب LinkedIn</a></p>
-    <p><a class="button" href="https://www.facebook.com/100070264275888/posts/252484737103667/?mibextid=Nif5oz" target="_blank">تعمل أول CV خاصة فيك / Resume</a></p>
-    <p><a class="button" href="https://m.facebook.com/story.php?story_fbid=252781037074037&id=100070264275888&mibextid=Nif5oz" target="_blank">تبدأ بتعلم/بالقراءة عن/باستخدام Github</a></p>
-    <p>س: كيف أقوم بدراسة متطلبات سوق العمل؟</p>
-    <p>- مبدئياً من خلال 3 أمور:</p>
-    <p>1- حسابك على منصة LinkedIn: من خلاله بتقدر تلاحظ شو عليه طلب هالفترة ولمدة من الزمن.</p>
-    <p>2- معارفك بالـIT: بامكانك تسأل أي حد بشتغل في شركة IT ومر عليه زمن.</p>
-    <p>3- تشوف شو تقنيات جديدة حاليا بتنزل كمثال: زي ما صار بـFlutter.</p>
-    <p>س: شو قصدك بالتدريب الاختياري؟</p>
-    <p>- مبدئياً في شركات بقوموا بعمل تدريب لطلاب الجامعة أحياناً بعادل التدريب العملي وأحياناً لأ.</p>
-    <p>رح أعدد أمثلة مع روابط لمواقع تواصل بتقدر تتابعهم عليها بإذن الله:</p>
-    <p>Atypon <a class="button" href="https://apply.workable.com/atypon-systems-inc/" target="_blank">رابط</a></p>
-    <p>Epic Academy (Aspire) <a class="button" href="https://www.linkedin.com/company/aspire-it-services/" target="_blank">رابط</a></p>
-    <p>Tahaluf Al Emarat <a class="button" href="https://www.linkedin.com/company/tlearninghub/" target="_blank">رابط</a></p>
-</div>
+            <div class="question">
+                <p>س: طب مش لازم أعرف متطلبات السوق قبل ما أبلش بمجال؟</p>
+            </div>
+            <div class="answer">
+                <p>- يس، لكن تبلش بمجال إنت حابه ممكن تتحمس وتتحدى كثير ظروف لتصير، على عكس مجال إنت مجبر عليه.</p>
+            </div>
 
-<div class="section">
-    <h2>2. خطوات التدريب (بشكل مرتب + مصادر + ملاحظات):</h2>
-    <p><a class="button" href="https://drive.google.com/file/d/15aEPBWlTdeWJual98mB/view" target="_blank">رابط</a></p>
-    <p>ملاحظات:</p>
-    <p>1. كل ما يوجد هنا من خطوات موجود في الخدمات.</p>
-    <p>2. جهة التواصل الرسمية هي المهندس خلف عناقرة.</p>
-    <p>3. يجب أن تبدأ البحث فور الانتهاء من الفصل الذي يسبق فصل التدريب.</p>
-    <p>4. أسئلة بالبال:</p>
-    <p>- شو بصير لو الشركة سرحت الطالب بنص التدريب؟ = يدور على تدريب جديد، (وحسب قوانين الجامعة اذا انقطع ربع مدة التدريب يلغى).</p>
-    <p>- شو بصير لو الطالب ما وجد تدريب؟ = بأجل تدريبه للفصل يلي بعده بحيث يوخذ وقت اكثر لحتى يدور على شركات.</p>
-    <p>- هل دورات اونلاين تجزئ عن التدريب؟ = نهائيا، وممنوعة هي والتدريب المدفوع.</p>
-    <p>- هل التدريب بشركة اونلاين محسوب؟ = نعم مسموح ويفضل on-site.</p>
-    <p>- قدمت طلب واعتمده وما اجته موافقة من شركة، شو أعمل؟ = قدم طلب جديد وقم باضافة ملاحظة.</p>
-</div>
+            <div class="question">
+                <p>س: كيف اختار مجال طيب؟</p>
+            </div>
+            <div class="answer">
+                <p>- في كثير امور بتساعدك:</p>
+                <ul>
+                    <li>فكر بمشروع انت مهتم تعمله</li>
+                    <li>حل مشكلة انت بتواجهها بالكود</li>
+                    <li>إسأل حالك "كيف عملو كذا" وحاول اعمل زيه</li>
+                </ul>
+            </div>
 
-<div class="section">
-    <h2>3. مصادر مهمة:</h2>
-    <p>- من المهم قراءة الملفات المتوفرة في خدمات الطالب بخانة التدريب وتشمل كل من التالي:</p>
-    <p>• ارشادات التدريب الميداني</p>
-    <p>• ارشادات التقرير النهائي</p>
-    <p>• نموذج ساعات التدريب</p>
-    <p>• نموذج التقييم الخاص بالطالب</p>
-    <p>• نموذج التقييم الشهري للشركة</p>
-    <p>- جروب رابطة المبرمجين الاردنيين:</p>
-    <p><a class="button" href="https://www.facebook.com/groups/JoDevelopersGuild/?ref=share&mibextid=NSMWBT" target="_blank">رابط</a></p>
-</div>
+            <div class="question">
+                <p>س: شو في مجالات بالسوق؟</p>
+            </div>
+            <div class="answer">
+                <p>Note: المحتوى هنا متجدد</p>
+                <ul>
+                    <li>Quality Assurance</li>
+                    <li>Frontend Developer</li>
+                    <li>Backend Developer</li>
+                    <li>Full-Stack Developer</li>
+                    <li>Machine Learning Engineer</li>
+                    <li>Mobile Developer</li>
+                    <li>Android Developer</li>
+                    <li>IOS Developer</li>
+                    <li>PL/SQL Developer</li>
+                    <li>Software Implementation Developer</li>
+                    <li>Database Developer</li>
+                    <li>Network Administrator</li>
+                    <li>Game Developer</li>
+                    <li>Software Embedded Developer</li>
+                </ul>
+            </div>
 
-<div class="section">
-    <h2>4. أسماء الشركات:</h2>
-    <p><a class="button" href="https://docs.google.com/document/d/1fSa8bN9ILe3E/edit" target="_blank">رابط</a></p>
-</div>
+            <div class="question">
+                <p>س: كيف ازبط كل من LinkedIn, CV, Github:</p>
+            </div>
+            <div class="answer">
+                <p>- ناقشناهم ببوستات سابقة على النحو التالي</p>
+                <a class="button" href="https://m.facebook.com/story.php?story_fbid=252314470454027&id=100070264275888&mibextid=Nif5oz" target="_blank">
+                    <i class="fab fa-linkedin"></i> حساب LinkedIn
+                </a>
+                <a class="button" href="https://www.facebook.com/100070264275888/posts/252484737103667/?mibextid=Nif5oz" target="_blank">
+                    <i class="fas fa-file-alt"></i> تعمل أول CV خاصة فيك
+                </a>
+                <a class="button" href="https://m.facebook.com/story.php?story_fbid=252781037074037&id=100070264275888&mibextid=Nif5oz" target="_blank">
+                    <i class="fab fa-github"></i> تبدأ بتعلم Github
+                </a>
+            </div>
+        </div>
 
+        <div class="section">
+            <h2>2. خطوات التدريب</h2>
+            <div class="answer">
+                <p>ملاحظات مهمة:</p>
+                <ul>
+                    <li>كل ما يوجد هنا من خطوات موجود في الخدمات</li>
+                    <li>جهة التواصل الرسمية هي المهندس خلف عناقرة</li>
+                    <li>يجب أن تبدأ البحث فور الانتهاء من الفصل الذي يسبق فصل التدريب</li>
+                </ul>
+            </div>
+            <a class="button" href="https://drive.google.com/file/d/15aEPBWlTdeWJual98mB/view" target="_blank">
+                <i class="fas fa-file-pdf"></i> تحميل الخطوات
+            </a>
+        </div>
+
+        <div class="section">
+            <h2>3. مصادر مهمة</h2>
+            <div class="answer">
+                <p>- من المهم قراءة الملفات المتوفرة في خدمات الطالب بخانة التدريب وتشمل:</p>
+                <ul>
+                    <li>ارشادات التدريب الميداني</li>
+                    <li>ارشادات التقرير النهائي</li>
+                    <li>نموذج ساعات التدريب</li>
+                    <li>نموذج التقييم الخاص بالطالب</li>
+                    <li>نموذج التقييم الشهري للشركة</li>
+                </ul>
+            </div>
+            <a class="button" href="https://www.facebook.com/groups/JoDevelopersGuild/?ref=share&mibextid=NSMWBT" target="_blank">
+                <i class="fab fa-facebook"></i> جروب رابطة المبرمجين الاردنيين
+            </a>
+        </div>
+
+        <div class="section">
+            <h2>4. أسماء الشركات</h2>
+            <div class="company-list">
+                <div class="company-item">
+                    <h3>Atypon</h3>
+                    <a class="button" href="https://apply.workable.com/atypon-systems-inc/" target="_blank">رابط التقديم</a>
+                </div>
+                <div class="company-item">
+                    <h3>Epic Academy</h3>
+                    <a class="button" href="https://www.linkedin.com/company/aspire-it-services/" target="_blank">رابط التقديم</a>
+                </div>
+                <div class="company-item">
+                    <h3>Tahaluf Al Emarat</h3>
+                    <a class="button" href="https://www.linkedin.com/company/tlearninghub/" target="_blank">رابط التقديم</a>
+                </div>
+            </div>
+            <a class="button" href="https://docs.google.com/document/d/1fSa8bN9ILe3E/edit" target="_blank">
+                <i class="fas fa-list"></i> قائمة الشركات الكاملة
+            </a>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
