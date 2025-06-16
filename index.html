@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:200" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary-color: #007bff;
@@ -115,6 +116,7 @@
       margin: 15px;
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       cursor: pointer;
+      text-decoration: none;
     }
 
     .cardee:hover {
@@ -259,12 +261,16 @@
       transition: var(--transition);
       cursor: pointer;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      text-decoration: none;
+      display: inline-block;
     }
 
     .button:hover {
       background: var(--accent-color);
       transform: translateY(-2px);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      color: white;
+      text-decoration: none;
     }
 
     .footer {
@@ -293,6 +299,14 @@
     .social-links a:hover {
       color: var(--accent-color) !important;
       transform: translateY(-3px);
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
     }
 
     @media (max-width: 768px) {
@@ -335,7 +349,6 @@
     }
   </style>
 </head>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
 <body>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg">
@@ -382,19 +395,13 @@
   <!-- NES Team Section -->
   <div id="team" class="container mt-5 section active">
     <div class="welcome-text">
-      <h1> Welcome to NES&ULTRA Library</h1>
-      <p>We are NES&ULTRA Team, dedicated to providing the best educational resources in network engineering and security field in just university to help you succeed. Our team is passionate about learning and teaching, and we strive to bring you the most comprehensive and up-to-date materials available </p>
-      <!-- Map Button Section -->
-      <div class="text-center mt-4">
-</button>
-
-      </div>
+      <h1>Welcome to NES&ULTRA Library</h1>
+      <p>We are NES&ULTRA Team, dedicated to providing the best educational resources in network engineering and security field in just university to help you succeed. Our team is passionate about learning and teaching, and we strive to bring you the most comprehensive and up-to-date materials available.</p>
     </div>
     <div class="logo-container text-center">
-    <img src="logo.png" alt="Logo" class="logo">
-    <img src="logo2.png" alt="Logo 2" class="logo">
-</div>
-
+      <img src="logo.png" alt="Logo" class="logo">
+      <img src="logo2.png" alt="Logo 2" class="logo">
+    </div>
   </div>
 
   <!-- Courses Section -->
@@ -443,18 +450,18 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src='https://www.noupe.com/noupe/embedjs/0197789dcaed7210978b58e22f6fe0e66c2f/embed.js?skipWelcome=1&maximizable=1'></script>
   <script>
-  
-  
-  
+    // Function to show section
     function showSection(sectionId) {
       // Hide all sections
       document.querySelectorAll('.section').forEach(section => {
         section.classList.remove('active');
+        section.style.display = 'none';
       });
       // Show the selected section
-      document.getElementById(sectionId).classList.add('active');
+      const selectedSection = document.getElementById(sectionId);
+      selectedSection.classList.add('active');
+      selectedSection.style.display = 'block';
     }
 
     // Function to filter courses based on search input
@@ -466,17 +473,16 @@
 
     // Function to display courses
     function displayCourses(courses) {
-    
       const courseCardsContainer = document.getElementById('courseCards');
       let content = '';
       courses.forEach(course => {
         content += `
-          <div class="col-md-4">
-            <div class="card gold-border"> <!-- Apply the gold-border class -->
+          <div class="col-md-4 mb-4">
+            <div class="card gold-border">
               <img src="${course.imageURL}" class="card-img-top" alt="${course.name}">
               <div class="card-body">
                 <h5 class="card-title">${course.name}</h5>
-               <button onclick="window.location.href='${course.linkURL}'" class="button button-blue">Go to course</button>
+                <a href="${course.linkURL}" class="button button-blue">Go to course</a>
               </div>
             </div>
           </div>
@@ -484,7 +490,8 @@
       });
       courseCardsContainer.innerHTML = content;
     }
- const courseData = [
+
+    const courseData = [
       {
         name: 'c++ and c++ lab   (مقدمة في البرمجة & مختبر البرمجة) ( ع ح101 )',
         imageURL: 'https://th.bing.com/th/id/OIP.TKkLLW5inR_0rdtvWNh3-AHaER?rs=1&pid=ImgDetMain',
@@ -671,14 +678,16 @@
         linkURL: 'secur.html'
       }
     ];
-      
+
     // Initialize course display on page load
-    displayCourses(courseData);
+    document.addEventListener('DOMContentLoaded', function() {
+      displayCourses(courseData);
+      // Show the team section by default
+      showSection('team');
+    });
 
     // Event listener for search input
     document.getElementById('courseSearch').addEventListener('input', filterCourses);
-    
-  
   </script>
 </body>
 </html>
