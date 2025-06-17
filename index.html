@@ -619,6 +619,50 @@
     [data-theme="dark"] .ai-card {
       border-image: linear-gradient(135deg, #3b82f6, #fbbf24, #6366f1) 1;
     }
+
+    .hero-advanced-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 40px 0 10px 0;
+      text-align: center;
+      gap: 10px;
+    }
+    .hero-advanced-text .hero-icon {
+      font-size: 2.5em;
+      color: var(--primary-color);
+      margin-bottom: 6px;
+      animation: hero-bounce 2s infinite alternate;
+    }
+    @keyframes hero-bounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-8px); }
+    }
+    .hero-advanced-text .hero-main {
+      font-size: 2.1em;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--text-color);
+      line-height: 1.2;
+    }
+    .hero-advanced-text .hero-gradient {
+      background: linear-gradient(90deg, #2563eb, #f59e0b, #4f46e5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      font-weight: 800;
+    }
+    .hero-advanced-text .hero-sub {
+      font-size: 1.15em;
+      color: #666;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+    [data-theme="dark"] .hero-advanced-text .hero-sub {
+      color: #ccc;
+    }
   </style>
 </head>
 <body>
@@ -649,8 +693,11 @@
         <div class="fg">NES & ULTRA</div>
       </div>
       
-      <h3 class="animate__animated animate__fadeInUp mt-4">We provide the best educational resources in Network and security engineering Major in just University</h3>
-      <p class="animate__animated animate__fadeInUp mt-3">Explore courses and enhance your knowledge</p>
+      <div class="hero-advanced-text animate__animated animate__fadeInDown">
+        <span class="hero-icon"><i class="fas fa-graduation-cap"></i></span>
+        <span class="hero-main">Empowering <span class="hero-gradient">Network & Security Engineers</span> at JUST University</span>
+        <span class="hero-sub">Unlock top-tier resources, explore courses, and elevate your expertise.</span>
+      </div>
     </div>
 
     <div class="con">
