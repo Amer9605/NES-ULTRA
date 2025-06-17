@@ -323,25 +323,50 @@
       padding: 8px 16px;
       border-radius: var(--radius);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      display: none;
+      display: flex;
       align-items: center;
       gap: 8px;
       z-index: 10;
+      font-size: 1rem;
     }
 
     .loading i {
       animation: spin 1s linear infinite;
     }
 
-    /* Animations */
-    @keyframes messageIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .loading span {
+      display: inline-block;
+      letter-spacing: 1px;
     }
+
+    .loading .dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin-left: 2px;
+      background: var(--primary);
+      border-radius: 50%;
+      animation: loadingDot 1.2s infinite;
+    }
+
+    .loading .dot:nth-child(2) { animation-delay: 0.2s; }
+    .loading .dot:nth-child(3) { animation-delay: 0.4s; }
 
     @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
+    }
+
+    @keyframes loadingDot {
+      0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
+      40% { transform: scale(1.2); opacity: 1; }
+    }
+
+    /* Animations */
+    @keyframes messageIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      60% { opacity: 1; transform: translateY(-5px) scale(1.02); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     /* Responsive Design */
@@ -416,9 +441,63 @@
     .input-container {
       margin-bottom: 40px;
     }
+
+    .message.ai.typing .message-body::after {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 18px;
+      margin-left: 4px;
+      background: var(--primary);
+      border-radius: 4px;
+      animation: blink 1s steps(1) infinite;
+      vertical-align: bottom;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+
+    /* --- Circular Video Background --- */
+    #circle-bg {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 170vmax;
+      height: 130vmax;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      clip-path: circle(50% at 50% 50%);
+      -webkit-clip-path: circle(40% at 50% 50%);
+      opacity: 0.18;
+      overflow: hidden;
+    }
+
+    #video-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      display: block;
+    }
+
+    .app-container, .global-header, .footer {
+      position: relative;
+      z-index: 1;
+    }
   </style>
 </head>
 <body>
+  <div id="circle-bg">
+    <video id="video-bg" autoplay loop muted playsinline>
+      <source src="Animation - 1750158337934.webm" type="video/webm">
+    </video>
+  </div>
   <!-- Global Header -->
   <header class="global-header">
     <a href="index.html" class="brand">
@@ -440,7 +519,7 @@
       <div class="input-container">
         <div class="loading" id="loading">
           <i class="fas fa-circle-notch"></i>
-          <span>Processing...</span>
+          <span>Processing</span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
         </div>
         <form class="input-wrapper" id="inputForm">
           <textarea 
@@ -511,9 +590,9 @@
       langPrefix: 'hljs language-'
     });
 
-    function addMessage(content, sender) {
+    function addMessage(content, sender, isTyping = false) {
       const msgDiv = document.createElement('div');
-      msgDiv.className = `message ${sender}`;
+      msgDiv.className = `message ${sender}` + (isTyping ? ' typing' : '');
       
       const avatar = document.createElement('div');
       avatar.className = 'message-avatar';
@@ -529,9 +608,10 @@
       const body = document.createElement('div');
       body.className = 'message-body';
       
-      if (sender === 'ai') {
+      if (sender === 'ai' && isTyping) {
+        body.innerHTML = '';
+      } else if (sender === 'ai') {
         body.innerHTML = marked.parse(content);
-        
         // Add copy buttons to code blocks
         body.querySelectorAll('pre').forEach(pre => {
           const code = pre.querySelector('code');
@@ -559,6 +639,7 @@
       msgDiv.appendChild(contentWrapper);
       chat.appendChild(msgDiv);
       chat.scrollTop = chat.scrollHeight;
+      return body;
     }
 
     // Initial welcome message
@@ -570,6 +651,10 @@
       loading.style.display = 'flex';
       sendBtn.disabled = true;
       input.disabled = true;
+
+      // Show AI typing animation
+      const typingBody = addMessage('', 'ai', true);
+      typingBody.innerHTML = '<span></span>';
 
       try {
         const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -594,18 +679,56 @@
 
         const data = await res.json();
         const reply = data.choices?.[0]?.message?.content || "I apologize, but I couldn't generate a response. Please try again.";
-        addMessage(reply, 'ai');
+
+        // Typing animation
+        await typeAIMessage(typingBody, reply);
+        typingBody.parentElement.parentElement.classList.remove('typing');
         conversation.push({ role: 'assistant', content: reply });
 
       } catch (error) {
         console.error('Error:', error);
-        addMessage("I apologize, but I encountered an error. Please try again.", 'ai');
+        typingBody.innerHTML = "I apologize, but I encountered an error. Please try again.";
+        typingBody.parentElement.parentElement.classList.remove('typing');
       } finally {
         loading.style.display = 'none';
         sendBtn.disabled = false;
         input.disabled = false;
         input.focus();
       }
+    }
+
+    // Typing animation for AI message
+    async function typeAIMessage(bodyElem, fullText) {
+      // Remove typing dots
+      bodyElem.innerHTML = '';
+      let i = 0;
+      let mdBuffer = '';
+      let typingSpeed = 12; // ms per char
+      while (i < fullText.length) {
+        mdBuffer += fullText[i];
+        bodyElem.innerHTML = marked.parse(mdBuffer) + '<span class="ai-cursor">|</span>';
+        i++;
+        chat.scrollTop = chat.scrollHeight;
+        await new Promise(r => setTimeout(r, Math.random() * typingSpeed + typingSpeed));
+      }
+      bodyElem.innerHTML = marked.parse(fullText);
+      // Add copy buttons to code blocks
+      bodyElem.querySelectorAll('pre').forEach(pre => {
+        const code = pre.querySelector('code');
+        if (code) {
+          const copyBtn = document.createElement('button');
+          copyBtn.className = 'copy-button';
+          copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+          copyBtn.onclick = () => {
+            navigator.clipboard.writeText(code.textContent);
+            copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(() => {
+              copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy';
+            }, 2000);
+          };
+          pre.appendChild(copyBtn);
+        }
+      });
     }
 
     // Handle form submission
