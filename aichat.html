@@ -143,13 +143,26 @@
     /* Chat Container */
     .chat-container {
       flex: 1;
-      max-width: 1200px;
-      margin: 0 auto;
+      max-width: 1600px;
+      margin: 48px auto 0 auto;
       display: flex;
       flex-direction: column;
-      height: calc(100vh - var(--header-height));
+      height: calc(100vh - var(--header-height) - 10px);
       position: relative;
-      background: var(--background);
+      background: rgba(255,255,255,0.65);
+      border-radius: 2.5rem;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+      border: 1.5px solid rgba(255,255,255,0.25);
+      backdrop-filter: blur(18px) saturate(160%);
+      -webkit-backdrop-filter: blur(18px) saturate(160%);
+      transition: background 0.3s, box-shadow 0.3s;
+      z-index: 1;
+    }
+
+    .dark .chat-container {
+      background: rgba(20,20,20,0.55);
+      border: 1.5px solid rgba(80,80,80,0.25);
+      box-shadow: 0 8px 32px 0 rgba(0,0,0,0.32);
     }
 
     .chat-messages {
@@ -519,7 +532,7 @@
       <div class="input-container">
         <div class="loading" id="loading">
           <i class="fas fa-circle-notch"></i>
-          <span>Processing</span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
         </div>
         <form class="input-wrapper" id="inputForm">
           <textarea 
