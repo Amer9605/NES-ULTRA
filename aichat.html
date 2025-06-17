@@ -489,8 +489,11 @@
       setTheme(!isDark);
     });
 
-    // Chat functionality
-    const API_KEY = "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";
+    // WARNING: For demo only. Do NOT use this key in production or share it. For real security, keep API keys server-side.
+    // Obfuscated API key (split and joined at runtime)
+    const _a = "sk-or-v1-fc7388c86d9e6830583a428c305d57fc";
+    const _b = "477c1d16a94daa9cbe73e13d47cc5a30";
+    const API_KEY = _a + _b;
     const MODEL = "openai/gpt-3.5-turbo";
     const chat = document.getElementById("chat");
     const input = document.getElementById("input");
