@@ -567,6 +567,58 @@
         font-size: 1.4rem;
       }
     }
+
+    .ai-card {
+      border: 2.5px solid;
+      border-image: linear-gradient(135deg, #2563eb, #f59e0b, #4f46e5) 1;
+      box-shadow: 0 0 32px 0 rgba(80, 80, 255, 0.10), 0 2px 24px 0 rgba(245, 158, 11, 0.10);
+      position: relative;
+      overflow: visible;
+    }
+    .ai-card .ai-glow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb 60%, #f59e0b 100%);
+      box-shadow: 0 0 32px 8px #2563eb55, 0 0 64px 16px #f59e0b33;
+      margin: 0 auto 18px auto;
+      font-size: 2.6em;
+      color: #fff;
+      animation: ai-glow-pulse 2.5s infinite alternate;
+      z-index: 2;
+    }
+    @keyframes ai-glow-pulse {
+      0% { box-shadow: 0 0 32px 8px #2563eb55, 0 0 64px 16px #f59e0b33; }
+      100% { box-shadow: 0 0 48px 16px #2563eb99, 0 0 96px 32px #f59e0b66; }
+    }
+    .ai-card span {
+      font-size: 1.5em;
+      font-weight: 700;
+      background: linear-gradient(90deg, #2563eb, #f59e0b, #4f46e5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+    .ai-card .ai-desc {
+      font-size: 1.05em;
+      color: #444;
+      margin: 0;
+      margin-top: 8px;
+      z-index: 2;
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+    }
+    [data-theme="dark"] .ai-card .ai-desc {
+      color: #eee;
+    }
+    [data-theme="dark"] .ai-card {
+      border-image: linear-gradient(135deg, #3b82f6, #fbbf24, #6366f1) 1;
+    }
   </style>
 </head>
 <body>
@@ -602,6 +654,11 @@
     </div>
 
     <div class="con">
+      <a href="aichat.html" class="cardee ai-card animate__animated animate__fadeInUp" style="animation-delay:0s">
+        <div class="ai-glow"><i class="fas fa-robot"></i></div>
+        <span>AmerAI Chat</span>
+        <p class="ai-desc">Try our advanced AI assistant for smart Q&A, code help, and more!</p>
+      </a>
       <div class="cardee animate__animated animate__fadeInUp" onclick="showSection('courses')">
         <i class="fas fa-book-open"></i>
         <span>Explore Courses</span>
